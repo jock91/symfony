@@ -109,7 +109,6 @@ class AdvertController extends Controller
   public function deleteAction($id)
   {
     // Ici, on récupérera l'annonce correspondant à $id
-
     // Ici, on gérera la suppression de l'annonce en question
 
     return $this->render('OCPlatformBundle:Advert:delete.html.twig');
