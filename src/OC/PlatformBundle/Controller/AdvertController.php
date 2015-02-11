@@ -2,6 +2,7 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Entity\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,35 +45,64 @@ class AdvertController extends Controller
 
   public function viewAction($id)
   {
-  	// On récupère le repository
-    $repository = $this->getDoctrine()
-    ->getManager()
-    ->getRepository('OCPlatformBundle:Advert');
+  	$em = $this->getDoctrine()->getManager();
 
-
-    // On récupère l'entité correspondante à l'id $id
-    $advert = $repository->find($id);
+    // On récupère l'annonce $id
+    $advert = $em
+      ->getRepository('OCPlatformBundle:Advert')
+      ->find($id)
+    ;
 
     if (null === $advert) {
-    	throw new NotFoundHttpException("L'annonce d'id".$id."n'existe pas.");
+      throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
     }
 
+    // On récupère la liste des candidatures de cette annonce
+    $listApplications = $em
+      ->getRepository('OCPlatformBundle:Application')
+      ->findBy(array('advert' => $advert))
+    ;
+
     return $this->render('OCPlatformBundle:Advert:view.html.twig', array(
-      'advert' => $advert
+      'advert'           => $advert,
+      'listApplications' => $listApplications
     ));
   }
 
   public function addAction(Request $request)
   {
+  	// Création de l'entité Advert
     $advert = new Advert();
     $advert->setTitle('Recherche développeur Symfony2.');
     $advert->setAuthor('Alexandre');
     $advert->setContent("Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…");
 
+    // Création d'une première candidature
+    $application1 = new Application();
+    $application1->setAuthor('Marine');
+    $application1->setContent("J'ai toutes les qualités requises.");
+
+    // Création d'une deuxième candidature par exemple
+    $application2 = new Application();
+    $application2->setAuthor('Pierre');
+    $application2->setContent("Je suis très motivé.");
+
+    // On lie les candidatures à l'annonce
+    $application1->setAdvert($advert);
+    $application2->setAdvert($advert);
+
+    // On récupère l'EntityManager
     $em = $this->getDoctrine()->getManager();
 
+    // Étape 1 : On « persiste » l'entité
     $em->persist($advert);
 
+    // Étape 1 bis : pour cette relation pas de cascade lorsqu'on persiste Advert, car la relation est
+    // définie dans l'entité Application et non Advert. On doit donc tout persister à la main ici.
+    $em->persist($application1);
+    $em->persist($application2);
+
+    // Étape 2 : On « flush » tout ce qui a été persisté avant
     $em->flush();
 
     if ($request->isMethod('POST')) {

@@ -7,13 +7,19 @@
 {% endblock %}
 
 {% block ocplatform_body %}
-
+	{% if advert.image is not null %}
+		<img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}">
+	{% endif %}
   <h2>{{ advert.title }}</h2>
   <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}</i>
 
   <div class="well">
     {{ advert.content }}
   </div>
+  {% for lA in listApplications %} 
+		<h5>{{ lA.author }} <small>{{ lA.date|date('d/m/Y') }}</small></h5> 
+		<p>{{ lA.content }} </p> 
+	{% endfor %}
 
   <p>
     <a href="{{ path('oc_platform_home') }}" class="btn btn-default">
