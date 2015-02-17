@@ -40,7 +40,6 @@
   		{{ form_widget(form.date, {'class' : 'form-control'}) }}
   		</div>
   	</div>
-	<div class="form-group">
 
 	<div class="form-group">
   		{{ form_label(form.author, "Auteur de l'annonce", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -52,7 +51,7 @@
   		</div>
   	</div>
 	<div class="form-group">
-  		{{ form_label(form.published, "Publier l'annonce ? ", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+  		{{ form_label(form.published, "Publier l'annonce :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
 			
 		{{ form_errors(form.published) }}
 
@@ -62,7 +61,7 @@
   	</div>
 
 	<div class="form-group">
-  		{{ form_label(form.image, "image ? ", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+  		{{ form_label(form.image, "image :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
 			
 		{{ form_errors(form.image) }}
 
@@ -70,6 +69,15 @@
   		{{ form_widget(form.image, {'class' : 'form-control'}) }}
   		</div>
   	</div>
+
+  	<div class="form-group">
+	{{ form_label(form.categories, "Catégorie(s) de votre annonce",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+  	<div class="col-sm-4 text-center">
+	  {{ form_widget(form.categories, {'attr': {'class': 'form-control'}}) }}
+	  </div>
+	</div>
+
   	<div class="form-group">
   	<div class="col-sm-4 text-center">
 	  {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
@@ -83,7 +91,6 @@
   
   {# Fermeture de la balise <form> du formulaire HTML #}
   {{ form_end(form) }}
-</div>
 {# On charge la bibliothèque jQuery. Ici, je la prends depuis le CDN google
    mais si vous l'avez en local, changez simplement l'adresse. #}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
