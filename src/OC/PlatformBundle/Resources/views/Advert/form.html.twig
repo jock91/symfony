@@ -31,6 +31,7 @@
     </div>
 
   {# Génération du label + error + widget pour un champ #}
+  {% if form.date is defined %}
 	<div class="form-group">
   		{{ form_label(form.date, "Date de l'annonce", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
 			
@@ -40,6 +41,7 @@
   		{{ form_widget(form.date, {'class' : 'form-control'}) }}
   		</div>
   	</div>
+  	{% endif %}
 
 	<div class="form-group">
   		{{ form_label(form.author, "Auteur de l'annonce", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -50,6 +52,8 @@
   		{{ form_widget(form.author, {'attr' : {'class' : 'form-control'}}) }}
   		</div>
   	</div>
+  	  {% if form.published is defined %}
+
 	<div class="form-group">
   		{{ form_label(form.published, "Publier l'annonce :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
 			
@@ -59,6 +63,9 @@
   		{{ form_widget(form.published, {'class' : 'form-control'}) }}
   		</div>
   	</div>
+
+  	  {% endif %}
+
 
 	<div class="form-group">
   		{{ form_label(form.image, "image :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}

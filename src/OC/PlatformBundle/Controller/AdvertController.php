@@ -5,8 +5,12 @@ namespace OC\PlatformBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Form\AdvertType;
+use OC\PlatformBundle\Form\AdvertEditType;
+use OC\PlatformBundle\Entity\Image;
+use OC\PlatformBundle\Form\ImageType;
 
 class AdvertController extends Controller
 {
@@ -66,12 +70,18 @@ class AdvertController extends Controller
     ));
   }
 
+  /**
+  * @Security("has_role('ROLE_AUTEUR')")
+  */
   public function addAction(Request $request)
   {
+ 
     $advert = new Advert();
     $form = $this->createForm(new AdvertType(), $advert);
 
     if ($form->handleRequest($request)->isValid()) {
+    	$advert->getImage()->upload();
+
       $em = $this->getDoctrine()->getManager();
       $em->persist($advert);
       $em->flush();
